@@ -37,12 +37,16 @@ namespace LSL.HttpClients.MessageHandlers
 
         private static string NormaliseBasePath(string basePath)
         {
+            string RemoveTrailingSlash(string path) => path.EndsWith("/") ? path.Substring(0, path.Length - 1) : path;
+
             if (string.IsNullOrEmpty(basePath)) return basePath;
             if (basePath == "/") return string.Empty;
 
-            return basePath.StartsWith("/")
-                ? basePath
-                : $"/{basePath}";
+            return RemoveTrailingSlash(
+                basePath.StartsWith("/")
+                    ? basePath
+                    : $"/{basePath}"
+                );
         }
     }
 }
