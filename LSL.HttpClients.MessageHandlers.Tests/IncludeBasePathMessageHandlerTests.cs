@@ -14,6 +14,7 @@ namespace LSL.HttpClients.MessageHandlers.Tests
         [TestCase("/", "/v1/example")]
         [TestCase("/base", "/base/v1/example")]
         [TestCase("/base/", "/base/v1/example")]
+        [TestCase("base/", "/base/v1/example")]
         [TestCase("/base/and-more", "/base/and-more/v1/example")]
         [TestCase("/base/and-more/", "/base/and-more/v1/example")]
         public async Task GivenABasePath_ItShouldSendMessagesUsingTheExpectedPath(string basePath, string expectedAbsolutePath)
