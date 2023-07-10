@@ -24,8 +24,6 @@ namespace LSL.HttpClients.MessageHandlers
         /// <inheritdoc/>
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            if (request.RequestUri == null) return await base.SendAsync(request, cancellationToken);
-
             var builder = new UriBuilder(request.RequestUri);
 
             builder.Path = $"{_basePath}{request.RequestUri.AbsolutePath}";
