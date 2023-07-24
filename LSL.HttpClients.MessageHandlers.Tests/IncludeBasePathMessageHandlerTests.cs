@@ -1,9 +1,15 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Newtonsoft.Json;
 using NUnit.Framework;
+using System.Net;
 
 namespace LSL.HttpClients.MessageHandlers.Tests
 {
@@ -47,5 +53,29 @@ namespace LSL.HttpClients.MessageHandlers.Tests
                 return Task.FromResult<HttpResponseMessage>(new HttpResponseMessage());
             }
         }
-    }
+
+        [Test]
+        public void Env()
+        {
+            var vars = Environment.GetEnvironmentVariables().OfType<DictionaryEntry>()
+                .ToDictionary(de => de.Key, de => de.Value)
+                .OrderBy(kvp => kvp.Key);
+
+            File.WriteAllText("./myvars.json", JsonConvert.SerializeObject(vars, Formatting.Indented));
+        }
+
+        [Test]
+        public void Other()
+        {
+            var u = new Uri("message:exchange/topic?queue=asd&routeToDev=1");
+            var qs = System.Web.HttpUtility.ParseQueryString(u.Query);
+            qs["another"] = "oh!#@$/:";
+            var ub = new UriBuilder(u);            
+            ub.Query = qs.ToString();
+            var r = Uri.EscapeDataString("my/queue");
+            ub.Path = $"{r}/asdasd";
+
+            Convert.FromBase64String("asd'");
+        }
+    }    
 }
